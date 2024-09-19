@@ -1,0 +1,113 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+
+using namespace std;
+
+
+struct TreeNode {
+    int data;
+    TreeNode* left;
+    TreeNode* right;
+};
+
+
+TreeNode* createNode(int data) {
+    TreeNode* newNode = new TreeNode();
+    newNode->data = data;
+    newNode->left = nullptr;
+    newNode->right = nullptr;
+    return newNode;
+}
+
+
+TreeNode* insert(TreeNode* root, int data) {
+    if (root == nullptr) {
+        return createNode(data);
+    }
+
+    if (data < root->data) {
+        root->left = insert(root->left, data);
+    } else {
+        root->right = insert(root->right, data);
+    }
+
+    return root;
+}
+
+
+void printLevelOrder(TreeNode* root) {
+    if (root == nullptr) return;
+
+    queue<TreeNode*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        int levelSize = q.size();
+        while (levelSize > 0) {
+            TreeNode* node = q.front();
+            q.pop();
+            cout << node->data << " ";
+
+            if (node->left != nullptr) {
+                q.push(node->left);
+            }
+            if (node->right != nullptr) {
+                q.push(node->right);
+            }
+
+            levelSize--;
+        }
+        cout << endl;
+    }
+}
+
+
+int findHeight(TreeNode* root) {
+    if (root == nullptr) {
+        return -1; 
+    }
+
+    int leftHeight = findHeight(root->left);
+    int rightHeight = findHeight(root->right);
+
+    return max(leftHeight, rightHeight) + 1;
+}
+
+
+void printLeafNodes(TreeNode* root) {
+    if (root == nullptr) return;
+
+    if (root->left == nullptr && root->right == nullptr) {
+        cout << root->data << " ";
+        return;
+    }
+
+    printLeafNodes(root->left);
+    printLeafNodes(root->right);
+}
+
+
+int main() {
+    TreeNode* root = nullptr;
+
+    
+    vector<int> values = {10, 5, 20, 3, 7, 15, 25};
+    for (int value : values) {
+        root = insert(root, value);
+    }
+
+   
+    cout << "Level-order traversal of the BST:" << endl;
+    printLevelOrder(root);
+
+    int height = findHeight(root);
+    cout << "Height of the BST: " << height << endl;
+
+   
+    cout << "Leaf nodes of the BST:" << endl;
+    printLeafNodes(root);
+    cout << endl;
+
+    return 0;
+}
