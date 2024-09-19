@@ -1,0 +1,24 @@
+out<<"\n Enter left child of"<<x;
+    root->left=create();
+    cout<<"\n Enter right child of "<<x;
+    root->right=create();
+    return root;
+}
+void preorder(node*root)
+{
+    if(root!=NULL)
+    {
+        cout<<root->data;
+        preorder(root->left);
+        preorder(root->right);
+      
+        
+    }
+}
+    int main ()
+    {
+        node*root=create();
+        preorder(root);
+        return 0;
+    }
+
